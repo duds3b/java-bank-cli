@@ -3,87 +3,80 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Banco banco = new Banco();
+        Banco bank = new Banco();
 
         while (true) {
             System.out.println("\n=== JAVA BANK CLI ===");
-            System.out.println("1) Criar conta");
-            System.out.println("2) Listar contas");
-            System.out.println("3) Depositar");
-            System.out.println("4) Sacar");
-            System.out.println("5) Transferir");
-            System.out.println("0) Sair");
-            System.out.print("Escolha: ");
+            System.out.println("1) Create account");
+            System.out.println("2) List accounts");
+            System.out.println("3) Deposit");
+            System.out.println("4) Withdraw");
+            System.out.println("5) Transfer");
+            System.out.println("0) Exit");
+            System.out.print("Choose: ");
 
-            String op = sc.nextLine().trim();
+            String option = sc.nextLine().trim();
 
             try {
-                if (op.equals("1")) {
-                    System.out.print("Nome do titular: ");
-                    String nome = sc.nextLine();
-                    Conta conta = banco.criarConta(nome);
-                    System.out.println("Conta criada! Numero: " + conta.getNumero());
+                if (option.equals("1")) {
+                    System.out.print("Account holder name: ");
+                    String name = sc.nextLine();
+                    Conta account = bank.criarConta(name);
+                    System.out.println("Account created! Number: " + account.getNumero());
 
-                } else if (op.equals("2")) {
-                    if (banco.listarContas().isEmpty()) {
-                        System.out.println("Nenhuma conta cadastrada.");
+                } else if (option.equals("2")) {
+                    if (bank.listarContas().isEmpty()) {
+                        System.out.println("No accounts registered.");
                     } else {
-                        for (Conta c : banco.listarContas()) {
+                        for (Conta c : bank.listarContas()) {
                             System.out.println(c);
                         }
                     }
 
-                } else if (op.equals("3")) {
-                    Conta conta = pedirConta(sc, banco);
-                    System.out.print("Valor: ");
-                    double valor = Double.parseDouble(sc.nextLine().replace(",", "."));
-                    conta.depositar(valor);
-                    System.out.println("Deposito OK. Saldo: " + String.format("%.2f", conta.getSaldo()));
+                } else if (option.equals("3")) {
+                    Conta account = askForAccount(sc, bank);
+                    System.out.print("Amount: ");
+                    double amount = Double.parseDouble(sc.nextLine().replace(",", "."));
+                    account.depositar(amount);
+                    System.out.println("Deposit successful. Balance: " + String.format("%.2f", account.getSaldo()));
 
-                } else if (op.equals("4")) {
-                    Conta conta = pedirConta(sc, banco);
-                    System.out.print("Valor: ");
-                    double valor = Double.parseDouble(sc.nextLine().replace(",", "."));
-                    conta.sacar(valor);
-                    System.out.println("Saque OK. Saldo: " + String.format("%.2f", conta.getSaldo()));
+                } else if (option.equals("4")) {
+                    Conta account = askForAccount(sc, bank);
+                    System.out.print("Amount: ");
+                    double amount = Double.parseDouble(sc.nextLine().replace(",", "."));
+                    account.sacar(amount);
+                    System.out.println("Withdrawal successful. Balance: " + String.format("%.2f", account.getSaldo()));
 
-                } else if (op.equals("5")) {
-                    System.out.println("Conta ORIGEM:");
-                    Conta origem = pedirConta(sc, banco);
+                } else if (option.equals("5")) {
+                    System.out.println("SOURCE account:");
+                    Conta source = askForAccount(sc, bank);
 
-                    System.out.println("Conta DESTINO:");
-                    Conta destino = pedirConta(sc, banco);
+                    System.out.println("DESTINATION account:");
+                    Conta destination = askForAccount(sc, bank);
 
-                    System.out.print("Valor: ");
-                    double valor = Double.parseDouble(sc.nextLine().replace(",", "."));
+                    System.out.print("Amount: ");
+                    double amount = Double.parseDouble(sc.nextLine().replace(",", "."));
 
-                    origem.transferirPara(destino, valor);
-                    System.out.println("Transferencia OK.");
-                    System.out.println("Saldo origem: " + String.format("%.2f", origem.getSaldo()));
-                    System.out.println("Saldo destino: " + String.format("%.2f", destino.getSaldo()));
+                    source.transferirPara(destination, amount);
+                    System.out.println("Transfer successful.");
+                    System.out.println("Source balance: " + String.format("%.2f", source.getSaldo()));
+                    System.out.println("Destination balance: " + String.format("%.2f", destination.getSaldo()));
 
-                } else if (op.equals("0")) {
-                    System.out.println("Falou.");
+                } else if (option.equals("0")) {
+                    System.out.println("Goodbye.");
                     break;
 
                 } else {
-                    System.out.println("Opcao invalida.");
+                    System.out.println("Invalid option.");
                 }
             } catch (Exception e) {
-                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Error: " + e.getMessage());
             }
         }
 
         sc.close();
     }
 
-    private static Conta pedirConta(Scanner sc, Banco banco) {
-        System.out.print("Numero da conta: ");
-        int numero = Integer.parseInt(sc.nextLine().trim());
-        Conta conta = banco.buscarContaPorNumero(numero);
-        if (conta == null) {
-            throw new IllegalArgumentException("Conta nao encontrada.");
-        }
-        return conta;
-    }
-}
+    private static Conta askForAccount(Scanner sc, Banco bank) {
+        System.out.print("Account number: ");
+        int number = Integer.parseInt(sc.nextLine().trim());
