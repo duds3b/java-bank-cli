@@ -1,31 +1,31 @@
 import java.util.ArrayList;
 
 public class Banco {
-    private ArrayList<Conta> contas;
-    private int proximoNumero;
+    private ArrayList<Conta> accounts;
+    private int nextNumber;
 
     public Banco() {
-        contas = new ArrayList<>();
-        proximoNumero = 1001;
+        accounts = new ArrayList<>();
+        nextNumber = 1001;
     }
 
-    public Conta criarConta(String titular) {
-        if (titular == null || titular.trim().isEmpty()) {
-            throw new IllegalArgumentException("Titular nao pode ser vazio.");
+    public Conta criarConta(String holder) {
+        if (holder == null || holder.trim().isEmpty()) {
+            throw new IllegalArgumentException("Account holder name cannot be empty.");
         }
-        Conta conta = new Conta(proximoNumero, titular.trim());
-        contas.add(conta);
-        proximoNumero++;
-        return conta;
+        Conta account = new Conta(nextNumber, holder.trim());
+        accounts.add(account);
+        nextNumber++;
+        return account;
     }
 
     public ArrayList<Conta> listarContas() {
-        return contas;
+        return accounts;
     }
 
-    public Conta buscarContaPorNumero(int numero) {
-        for (Conta c : contas) {
-            if (c.getNumero() == numero) return c;
+    public Conta buscarContaPorNumero(int number) {
+        for (Conta c : accounts) {
+            if (c.getNumero() == number) return c;
         }
         return null;
     }
